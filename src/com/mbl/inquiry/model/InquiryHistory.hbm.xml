@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="com.ibbl.inquiry.model.InquiryHistory" table="CRIB_INQUIRY_HISTORY" dynamic-update="true">
+        <id name="oid" column="OID" type="string">
+            <generator class="assigned">
+            </generator>
+        </id>
+        <property name="historyNote" column="HISTORY_NOTE" type="string"/>
+        <property name="operator" column="OPERATOR" type="string"/>
+        <property name="recordDate" column="RECORD_DATE" type="timestamp"/>
+        <property name="active" column="ACTIVE" type="integer"/>
+        <property name="inqStatus" column="INQ_STATUS" type="integer"/>
+
+        <many-to-one name="inquiry" class="com.ibbl.inquiry.model.Inquiry" fetch="select" lazy="proxy">
+            <column name="INQ_OID" not-null="true" />
+        </many-to-one>
+    </class>
+
+
+</hibernate-mapping>

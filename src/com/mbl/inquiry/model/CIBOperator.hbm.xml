@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="com.ibbl.inquiry.model.CIBOperator" table="CRIB_OPERATOR" dynamic-update="true">
+        <id name="oid" column="OID" type="string" length="20">
+            <generator class="assigned">
+            </generator>
+        </id>
+
+        <property name="userId" column="USER_ID" type="string" length="20"/>
+        <property name="userType" column="USER_TYPE" type="string" length="8"/>
+        <property name="name" column="NAME" type="string" length="30"/>
+        <property name="enlistedBr" column="ENLISTED_BR" type="string" length="2000"/>
+        <property name="active"  column="ACTIVE" type="integer"/>
+        <property name="recordDate"  column="RECORD_DATE" type="date"/>
+        <property name="cellPhone"  column="CELL_PHONE" type="string" length="11"/>
+        <property name="ipPhone"  column="IP_PHONE" type="string" length="5"/>
+
+         <!--<set name="histLogSet" table="CRIB_OPERATOR_HIST_LOG"
+              inverse="true" lazy="true" fetch="select">
+             <key>
+                 <column name="OPERATOR_OID" not-null="true" />
+             </key>
+             <one-to-many class="com.ibbl.inquiry.model.OperatorHistLog" />
+         </set>-->
+    </class>
+
+    <sql-query name="getAllCIBOperator">
+        select CIBOperator from CIBOperator CIBOperator
+        where CIBOperator.active like :active
+        order by CIBOperator.active DESC
+    </sql-query>
+
+    <sql-query name="getCIBOperatorBySearch">
+        select CIBOperator from CIBOperator CIBOperator
+        where CIBOperator.name like :name
+        and CIBOperator.userId like :user_id
+        and CIBOperator.userType like :user_type
+        and nvl(CIBOperator.enlistedBr,'-') like :enlisted_br
+        and CIBOperator.active like :active
+        order by CIBOperator.active DESC
+    </sql-query>
+
+
+
+
+
+</hibernate-mapping>

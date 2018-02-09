@@ -1,0 +1,98 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="com.ibbl.inquiry.model.Inquiry" table="CRIB_INQUIRY" dynamic-update="true">
+        <id name="oid" column="OID" type="string">
+            <generator class="assigned">
+            </generator>
+            <!--<generator class="native" />-->
+        </id>
+
+        <property name="custId" column="CUST_ID" type="string"/>
+        <property name="custName" column="CUST_NAME" type="string"/>
+        <property name="inqNo" column="INQUIRY_NO" type="string"/>
+        <property name="brCode" column="BR_CODE" type="string"/>
+        <property name="status" column="INQ_STATUS" type="java.lang.Integer"/>
+        <property name="keyCost" column="KEY_COST" type="double"/>
+        <property name="linkingCost" column="LINKING_COST" type="double"/>
+        <property name="proposedAmt" column="PROPOSED_AMT" type="double"/>
+
+        <property name="inqType" column="INQ_TP" type="integer"/>
+        <property name="financingType" column="FIN_TP" type="integer"/>
+        <property name="repayMode" column="REPAY_MD" type="integer"/>
+        <property name="installIntervalValue" column="INST_INT_VAL" type="integer"/>
+        <property name="installIntervalUnit" column="INST_INT_UNIT" type="integer"/>
+        <property name="noOfInstallment" column="NO_OF_INST" type="integer"/>
+
+        <property name="costStatus" column="COST_STATUS" type="integer"/>
+        <property name="drTrID" column="DR_TR_ID" type="string"/>
+        <property name="year" column="YEAR" type="string"/>
+        <property name="recordDate" column="RECORD_DATE" type="date"/>
+        <property name="requestDate" column="REQUEST_DATE" type="timestamp"/>
+        <property name="lastUpdateDate" column="LAST_UPDATE_ON" type="date"/>
+        <property name="dataOperator" column="DATA_OPERATOR" type="string"/>
+        <property name="dispatchedBy" column="DISPATCHER" type="string"/>
+        <property name="chargedBy" column="CHARGED_BY" type="string"/>
+        <property name="proposedAc" column="PROP_CHARGE_AC" type="string"/>
+        <property name="chargedFrom" column="CHARGED_FROM" type="string"/>
+        <property name="reportedBy" column="REPORTER" type="string"/>
+        <property name="reportDate" column="REPORT_DT" type="date"/>
+        <!--<property name="note"  column="NOTE" type="string"/>-->
+        <property name="reqCustIds" column="REQ_CUST_IDS" type="string"/>
+        <property name="finalStatus" column="FIN_STATUS" type="java.lang.Integer"/>
+
+
+        <!--<set name="historySet" table="CRIB_INQUIRY_HISTORY"
+             inverse="true" lazy="false" fetch="select" order-by="RECORD_DATE desc">
+            <key>
+                <column name="INQ_OID" not-null="true"/>
+            </key>
+            <one-to-many class="com.ibbl.inquiry.model.InquiryHistory"/>
+        </set>
+
+        <set name="docSet" table="CRIB_INQUIRY_RPT_DOC"
+             inverse="true" lazy="false" fetch="select">
+            <key>
+                <column name="INQ_OID" not-null="true"/>
+            </key>
+            <one-to-many class="com.ibbl.inquiry.model.ReportDoc"/>
+        </set>-->
+
+
+    </class>
+
+    <sql-query name="getAllInquiry">
+        select Inquiry from Inquiry Inquiry
+    </sql-query>
+
+    <!--The :br_code parameter must be List<String>-->
+    <sql-query name="getInquiryListBySearch">
+        select Inquiry from Inquiry Inquiry
+        where Inquiry.inqNo like :inq_no
+        and Inquiry.custId like :cust_id
+        and Inquiry.brCode in (:br_code)
+        and Inquiry.year like :year
+        and Inquiry.inqStatus like :rpt_status
+        and Inquiry.costStatus like :cost_status
+        and Inquiry.requestDate between :date_from and :date_to
+    </sql-query>
+
+    <!--
+    <![CDATA[
+    TO_DATE(:date_from, 'dd/MM/yyyy') and TO_DATE(:date_to, 'dd/MM/yyyy')
+        and Inquiry.recordDate >= :date_from
+        and Inquiry.recordDate <= :date_to
+        ]]>
+        -->
+
+    <sql-query name="getInquiryListBySearch_2">
+        select Inquiry from Inquiry Inquiry
+        where Inquiry.status = :inqStatus
+    </sql-query>
+
+
+
+</hibernate-mapping>

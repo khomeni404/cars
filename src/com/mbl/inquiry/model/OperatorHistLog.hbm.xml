@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="com.ibbl.inquiry.model.OperatorHistLog" table="CRIB_OPERATOR_HIST_LOG" dynamic-update="true">
+        <id name="oid" column="OID" type="string" length="20">
+            <generator class="assigned">
+            </generator>
+        </id>
+        <property name="historyType" column="HIST_TYPE_CODE" type="integer"/>
+        <property name="chargeState" column="CHARGE_STATE" type="integer"/>
+        <property name="newBrList" column="NEW_BR_LIST" type="string" length="800"/>
+        <property name="oldBrList" column="OLD_BR_LIST" type="string" length="800"/>
+        <property name="actionDate" column="ACTION_DATE" type="timestamp"/>
+        <property name="recordDate" column="RECORD_DATE" type="timestamp"/>
+        <property name="dataOperator" column="DATA_OPERATOR" type="string" length="20"/>
+        <property name="note" column="NOTE" type="string" length="200"/>
+
+        <many-to-one name="cibOperator" class="com.ibbl.inquiry.model.CIBOperator"  fetch="select">
+            <column name="OPERATOR_OID" not-null="true" length="20"/>
+        </many-to-one>
+    </class>
+
+    <sql-query name="getOperatorChargeLogByCode">
+        select OperatorChargeLog from OperatorChargeLog OperatorChargeLog
+        where OperatorChargeLog.caseCode = :caseCode
+    </sql-query>
+
+    <sql-query name="getOperatorChargeLogByReportRequestNo">
+        select OperatorChargeLog from OperatorChargeLog OperatorChargeLog
+        where OperatorChargeLog.billNo = :billNo
+    </sql-query>
+
+    <sql-query name="getOperatorChargeLogByCaseCode">
+        select OperatorChargeLog from OperatorChargeLog OperatorChargeLog
+        where OperatorChargeLog.caseCode = :caseCode
+    </sql-query>
+
+    <sql-query name="getOperatorChargeLogBySearch">
+        select OperatorChargeLog from OperatorChargeLog OperatorChargeLog
+        where OperatorChargeLog.billId like :bill_id
+        and OperatorChargeLog.billNo like :bill_no
+        and OperatorChargeLog.brCode = :br_code
+        and OperatorChargeLog.caseCode like :case_code
+    </sql-query>
+
+</hibernate-mapping>

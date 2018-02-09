@@ -1,0 +1,156 @@
+ /*  @Deprecated
+    public ActionForward dispatch(ActionMapping actionMapping, ActionForm actionForm, HttpServletRequest request, HttpServletResponse httpServletResponse) {
+        HttpSession session = request.getSession();
+        String ctx = request.getContextPath();
+        if (isCancelled(request)) {
+            return actionMapping.findForward(CIBBLDataList.FORWARD_CANCEL);
+        }
+        LoginBean loginBean = (LoginBean) session.getAttribute(CIBBLDataList.DATA_LOGIN);
+        Inquiry inquiryBean = (Inquiry) session.getAttribute(WebDictionary.INQUIRY_BEAN);
+
+        ActionMessages errors = new ActionMessages();
+        try {
+            Inquiry inquiryTODispatch = new Inquiry();
+            BeanUtils.copyProperties(inquiryTODispatch, inquiryBean);
+            inquiryTODispatch.setLastUpdateDate(new Date());
+            inquiryTODispatch.setInqStatus(InquiryStatus.DISPATCHED); // "12" is for "Dispatched"
+            inquiryTODispatch.setDispatchedBy(loginBean.getUserID());
+            DataCarrier reqCarrier = new DataCarrier(actionKeyDispatch);
+            reqCarrier.addData(CIBBLDataList.DATA_LOGIN, loginBean);
+            reqCarrier.addData(dataKeyInquiryBean, inquiryTODispatch);
+
+            DataCarrier resCarrier = BLGateWay.forward(reqCarrier);
+            if (resCarrier.isSuccess()) {
+                session.removeAttribute(WebDictionary.INQUIRY_BEAN);
+                session.setAttribute(WebDictionary.INQUIRY_BEAN, inquiryTODispatch);
+                session.setAttribute(WebDictionary.DATA_SUCCESS_MSG,
+                        CIBUtil.generateForwardMsg("Inquiry DISPATCHED to CIB successfully.", "View Inquiry", ctx + "/viewInquiry.do?action=view"));
+                return actionMapping.findForward(CIBBLDataList.FORWARD_SUCCESS);
+            } else {
+                errors.add(MsgDictionary.ERROR_TITLE, new ActionMessage(resCarrier.getMsg().getMsg()));
+                saveErrors(request, errors);
+                return actionMapping.findForward(CIBBLDataList.FORWARD_ERROR);
+            }
+        } catch (BusinessException e) {
+            session.setAttribute(WebDictionary.INQUIRY_BEAN, inquiryBean);
+            errors.add(MsgDictionary.ERROR_TITLE, new ActionMessage(e.getMessage(), e.getParams()));
+            saveErrors(request, errors);
+            return actionMapping.findForward(CIBBLDataList.FORWARD_ERROR);
+        } catch (SystemException e) {
+            errors.add(MsgDictionary.ERROR_TITLE, new ActionMessage(e.getMessage(), e.getParams()));
+            saveErrors(request, errors);
+            return actionMapping.findForward(CIBBLDataList.FORWARD_ERROR);
+        } catch (Exception e) {
+            errors.add(MsgDictionary.ERROR_TITLE, new ActionMessage(e.getMessage()));
+            saveErrors(request, errors);
+            return actionMapping.findForward(CIBBLDataList.FORWARD_ERROR);
+        }
+    }
+*/
+
+
+/* public ActionForward process(ActionMapping actionMapping, ActionForm actionForm, HttpServletRequest request, HttpServletResponse httpServletResponse) {
+        HttpSession session = request.getSession();
+        String ctx = request.getContextPath();
+        Inquiry inquiryBean = (Inquiry) session.getAttribute(WebDictionary.INQUIRY_BEAN);
+        if (isCancelled(request)) {
+            return actionMapping.findForward(CIBBLDataList.FORWARD_CANCEL);
+        }
+        ActionMessages errors = new ActionMessages();
+        try {
+            LoginBean loginBean = (LoginBean) session.getAttribute(CIBBLDataList.DATA_LOGIN);
+            Inquiry inquiryBean2 = new Inquiry();
+            BeanUtils.copyProperties(inquiryBean2, inquiryBean);
+            inquiryBean2.setLastUpdateDate(new Date());
+            inquiryBean2.setInqStatus(InquiryStatus.PROCESSING);    // "13" is for "Processing"
+            DataCarrier reqCarrier = new DataCarrier(actionKeyProcess);
+            reqCarrier.addData(dataLoginBean, loginBean);
+            reqCarrier.addData(dataKeyInquiryBean, inquiryBean2);
+
+            DataCarrier resCarrier = BLGateWay.forward(reqCarrier);
+            if (resCarrier.isSuccess()) {
+                @SuppressWarnings("unchecked")
+                Map<String, Object> customerListMap = (Map<String, Object>) resCarrier.retrieveData(CIBBLDataList.DATA_CUSTOMER_LIST_MAP);
+                Inquiry updatedRequestBean = (Inquiry) resCarrier.retrieveData(CIBBLDataList.DATA_INQUIRY_BEAN);
+                session.removeAttribute(WebDictionary.INQUIRY_BEAN);
+                session.setAttribute(WebDictionary.INQUIRY_BEAN, updatedRequestBean);
+                session.setAttribute(WebDictionary.CUSTOMER_LIST_MAP, customerListMap);
+                session.setAttribute(WebDictionary.DATA_SUCCESS_MSG,
+                        CIBUtil.generateForwardMsg("Inquiry FORWARDED to operator successfully.", "View Inquiry", ctx + "/viewInquiry.do?action=view"));
+                return actionMapping.findForward(CIBBLDataList.FORWARD_SUCCESS);
+            } else {
+                errors.add(MsgDictionary.ERROR_TITLE, new ActionMessage(resCarrier.getMsg().getMsg()));
+                saveErrors(request, errors);
+                return actionMapping.findForward(CIBBLDataList.FORWARD_ERROR);
+            }
+        } catch (BusinessException e) {
+            session.setAttribute(WebDictionary.INQUIRY_BEAN, inquiryBean);
+            errors.add(MsgDictionary.ERROR_TITLE, new ActionMessage(e.getMessage(), e.getParams()));
+            saveErrors(request, errors);
+            return actionMapping.findForward(CIBBLDataList.FORWARD_ERROR);
+        } catch (SystemException e) {
+            errors.add(MsgDictionary.ERROR_TITLE, new ActionMessage(e.getMessage(), e.getParams()));
+            saveErrors(request, errors);
+            return actionMapping.findForward(CIBBLDataList.FORWARD_ERROR);
+        } catch (Exception e) {
+            errors.add(MsgDictionary.ERROR_TITLE, new ActionMessage(e.getMessage()));
+            saveErrors(request, errors);
+            return actionMapping.findForward(CIBBLDataList.FORWARD_ERROR);
+        }
+    }
+*/
+
+
+/* public ActionForward complain(ActionMapping actionMapping, ActionForm actionForm, HttpServletRequest request, HttpServletResponse httpServletResponse) {
+        HttpSession session = request.getSession();
+        String ctx = request.getContextPath();
+        Inquiry inquiryBean = (Inquiry) session.getAttribute(WebDictionary.INQUIRY_BEAN);
+        String complainNote = request.getParameter("compNote");
+        if (isCancelled(request)) {
+            return actionMapping.findForward(CIBBLDataList.FORWARD_CANCEL);
+        }
+        ActionMessages errors = new ActionMessages();
+        try {
+            LoginBean loginBean = (LoginBean) session.getAttribute(CIBBLDataList.DATA_LOGIN);
+            Inquiry inquiryBean2 = new Inquiry();
+            BeanUtils.copyProperties(inquiryBean2, inquiryBean);
+            inquiryBean2.setLastUpdateDate(new Date());
+            inquiryBean2.setNote(complainNote);
+            inquiryBean2.setComplainedBy(loginBean.getUserID());
+            inquiryBean2.setInqStatus(InquiryStatus.COMPLAINED);    // "15" is for "Complaining"
+            DataCarrier reqCarrier = new DataCarrier(actionKeyComplain);
+            reqCarrier.addData(dataLoginBean, loginBean);
+            reqCarrier.addData(dataKeyInquiryBean, inquiryBean2);
+
+            DataCarrier resCarrier = BLGateWay.forward(reqCarrier);
+            if (resCarrier.isSuccess()) {
+                @SuppressWarnings("unchecked")
+                Map<String, Object> customerListMap = (Map<String, Object>) resCarrier.retrieveData(CIBBLDataList.DATA_CUSTOMER_LIST_MAP);
+                Inquiry updatedRequestBean = (Inquiry) resCarrier.retrieveData(CIBBLDataList.DATA_INQUIRY_BEAN);
+                session.removeAttribute(WebDictionary.INQUIRY_BEAN);
+                session.setAttribute(WebDictionary.INQUIRY_BEAN, updatedRequestBean);
+                session.setAttribute(WebDictionary.CUSTOMER_LIST_MAP, customerListMap);
+                session.setAttribute(WebDictionary.DATA_SUCCESS_MSG,
+                        CIBUtil.generateForwardMsg("Send Complain on \"Inquiry\" successfully.", "View Inquiry", ctx + "/viewInquiry.do?action=view"));
+                return actionMapping.findForward(CIBBLDataList.FORWARD_SUCCESS);
+            } else {
+                errors.add(MsgDictionary.ERROR_TITLE, new ActionMessage(resCarrier.getMsg().getMsg()));
+                saveErrors(request, errors);
+                return actionMapping.findForward(CIBBLDataList.FORWARD_ERROR);
+            }
+        } catch (BusinessException e) {
+            session.setAttribute(WebDictionary.INQUIRY_BEAN, inquiryBean);
+            errors.add(MsgDictionary.ERROR_TITLE, new ActionMessage(e.getMessage(), e.getParams()));
+            saveErrors(request, errors);
+            return actionMapping.findForward(CIBBLDataList.FORWARD_ERROR);
+        } catch (SystemException e) {
+            errors.add(MsgDictionary.ERROR_TITLE, new ActionMessage(e.getMessage(), e.getParams()));
+            saveErrors(request, errors);
+            return actionMapping.findForward(CIBBLDataList.FORWARD_ERROR);
+        } catch (Exception e) {
+            errors.add(MsgDictionary.ERROR_TITLE, new ActionMessage(e.getMessage()));
+            saveErrors(request, errors);
+            return actionMapping.findForward(CIBBLDataList.FORWARD_ERROR);
+        }
+    }
+*/

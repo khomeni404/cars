@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+       http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+
+    <context:component-scan base-package="com.mbl"/>
+
+    <mvc:annotation-driven/>
+
+    <mvc:resources mapping="/resources/**" location="/resources/"/>
+    <mvc:resources mapping="/doc/**" location="file:d://cloud/doc/"/>
+    <!--<mvc:resources mapping="/doc/**" location="file:d://cloud/projects/"/>-->
+
+    <!--Freemarker View Resolver -->
+    <bean id="freemarkerConfig" class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
+        <property name="templateLoaderPath" value="/"/>
+        <property name="freemarkerSettings">
+            <props>
+                <prop key="template_exception_handler">rethrow</prop>
+                <prop key="number_format">0.########</prop>
+                <prop key="date_format">dd/MM/yyyy</prop>
+                <prop key="datetime_format">dd/MM/yyyy hh:mm a</prop>
+                <!--<prop key="datetime_format">dd/MM/yyyy</prop>-->
+                <!--<prop key="datetime_format">2.3.27-incubating</prop>-->
+                <!--<prop key="recognize_standard_file_extensions">true</prop>-->
+                <prop key="incompatible_improvements">2.3.27</prop>
+                <!--<prop key="output_format">HTML</prop>-->
+            </props>
+        </property>
+    </bean>
+
+    <bean id="viewResolver" class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
+        <!--<property name="viewClass" value="com.example.LoggingFreeMarkerView" />-->
+        <!--<property name="cache" value="false" /> &lt;!&ndash; cache disabled for performance monitoring &ndash;&gt;-->
+        <property name="suffix" value=".ftl"/>
+        <!-- if you want to use the Spring FreeMarker macros, set this property to true -->
+        <property name="exposeSpringMacroHelpers" value="true"/>
+        <property name="exposeRequestAttributes" value="true"/>
+        <property name="exposeSessionAttributes" value="true"/>
+        <property name="requestContextAttribute" value="rc"/>
+    </bean>
+
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <!-- setting maximum upload size -->
+        <!--<property name="maxUploadSize" value="100000" />-->
+    </bean>
+
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="location" value="/WEB-INF/database.properties"/>
+    </bean>
+    <!-- DataSource -->
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="${jdbc.driverClassName}"/>
+        <property name="url" value="${jdbc.url}"/>
+        <property name="username" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
+    </bean>
+
+    <!-- Hibernate SessionFactory -->
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="hibernateProperties">
+            <props>
+                <!--<prop key="hibernate.default_schema">${hibernate.default_schema}</prop>-->
+                <prop key="hibernate.dialect">${jdbc.hibernate.dialect}</prop>
+                <prop key="hibernate.format_sql">${hibernate.format_sql}</prop>
+                <prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl_auto}</prop>
+                <prop key="hibernate.show_sql">${hibernate.show_sql}</prop>
+                <prop key="hibernate.generate_statistics">${hibernate.generate_statistics}</prop>
+                <prop key="hibernate.jdbc.batch_size">${hibernate.jdbc.batch_size}</prop>
+                <!--<prop key="hibernate.cache.use_second_level_cache">${hibernate.cache.use_second_level_cache}</prop>-->
+                <!--<prop key="hibernate.cache.use_query_cache">${hibernate.cache.use_query_cache}</prop>-->
+                <!--<prop key="hibernate.cache.provider_class">com.googlecode.hibernate.memcached.MemcachedCacheProvider</prop>-->
+                <!--<prop key="hibernate.memcached.servers">${hibernate.memcached.servers}</prop>-->
+                <!--<prop key="org.hibernate.type">true</prop>-->
+            </props>
+        </property>
+        <property name="packagesToScan" value="net.softengine.model, com.mbl.common.model, com.mbl.ir.model"/>
+    </bean>
+
+    <!-- Transaction -->
+    <bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+
+    <bean id="hibernateTemplate" class="org.springframework.orm.hibernate4.HibernateTemplate">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+
+    <bean id="authenticationAspect" class="com.mbl.security.aop.AuthenticationAspect"/>
+    <bean id="authorizationAspect" class="com.mbl.security.aop.AuthorizationAspect"/>
+
+
+    <!--Enable the @AspectJ support-->
+     <aop:aspectj-autoproxy proxy-target-class="true">
+         <aop:include name="authenticationAspect"/>
+         <aop:include name="authorizationAspect"/>
+     </aop:aspectj-autoproxy>
+</beans>

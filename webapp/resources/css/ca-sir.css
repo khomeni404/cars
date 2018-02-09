@@ -1,0 +1,153 @@
+/*
+ * Created by Khomeni on 20-Nov-17.
+ // <div class="vspace-6-sm"></div>
+ */
+html, body {
+    height: 100%;
+}
+
+#main-container {
+    border: 1px solid #000;
+    overflow-y: auto;
+    height: 100%;
+}
+
+.pointer{
+   cursor: pointer;
+}
+
+.pointer:hover{
+    background-color: #bdb657; color: #000000;
+}
+
+.ftl-err-msg {
+    font-size: 12px;
+    text-align: left;
+    color: #e40000;
+    font-weight: bold;
+    font-style: italic;
+}
+
+.se-mandatory {
+    color: #ff6119;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.control-label {
+    font-weight: bold;
+    color: #13465f;
+    text-align: left !important;
+}
+
+
+.se-hints{
+    font-size: 12px;
+    color: #b3775d;
+    padding-right: 11px;
+}
+
+.se-hints span{
+    color: #000000;
+    font-style: italic;
+}
+
+.se-label {
+    font-weight: bold;
+    color: #13465f;
+    text-align: left !important;
+    /*border: 1px solid #525252;*/
+    background-color: #b0b0b0 !important;
+    height: 28px;
+}
+
+.se-label-value {
+    font-weight: bold;
+    color: #02080b;
+    padding: 1px 0 4px 10px;
+    text-align: left !important;
+    border: 1px solid #c0bb90;
+    height: 28px;
+    background-color: #d1ede3 !important;
+}
+
+.se-value-l {
+    font-weight: bold;
+    background-color: #e8e7c7;
+    text-transform: uppercase;
+    font-size: 12px;
+}
+
+.se-label-r {
+    text-shadow: 1px 1px 1px rgba(232, 231, 199, 0.5);
+    font-size: 11px;
+    color: #000000;
+    padding-right: 10px;
+    margin: 0;
+    background-color: #b2e9cf;
+    text-transform: uppercase;
+    font-weight: bold;
+    /*line-height: 20px;*/
+    text-align: left;
+}
+
+.se-input-lab-r {
+    font-size: 12px;
+    color: #000000;
+    padding-right: 7px;
+    margin: 0;
+    background-color: #b2e9cf;
+    text-transform: uppercase;
+    font-weight: bold;
+    /*line-height: 20px;*/
+    text-align: right;
+}
+
+.se-input-lab-l {
+    font-size: 12px;
+    color: #000000;
+    padding-left: 7px;
+    margin: 0;
+    background-color: #b2e9cf;
+    text-transform: uppercase;
+    font-weight: bold;
+    /*line-height: 20px;*/
+    text-align: left;
+}
+
+.se-input {
+    background-color: #e8e7c7;
+    font-size: 12px;
+}
+
+/*Admin Template : Menu Style*/
+#admin-sidebar-menu-ul li a {
+    background-color: #9eb89a;
+    font-weight: bold;
+    color: black;
+}
+
+/*Student Template : Menu Style*/
+#st-sidebar-menu-ul li a {
+    background-color: #9eb89a;
+    font-weight: bold;
+    color: black;
+}
+
+.se-table tbody tr td {
+    background-color: #f1f1f1
+}
+
+.widget-toolbox .btn-group button:hover {
+    font-weight: bolder;
+    text-shadow: 0 0 3px #333f5b;
+}
+
+.help-span{
+    font-style: italic;
+    font-size: 10px;
+    color: #ff640a;
+    cursor: help;
+}
+
+

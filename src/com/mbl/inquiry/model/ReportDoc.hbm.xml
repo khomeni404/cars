@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="com.ibbl.inquiry.model.ReportDoc" table="CRIB_INQUIRY_RPT_DOC" dynamic-update="true">
+        <id name="oid" column="OID" type="string">
+            <generator class="assigned">
+            </generator>
+        </id>
+        <property name="docName" column="DOC_NAME" type="string"/>
+        <property name="givenName" column="GIVEN_NAME" type="string"/>
+        <property name="operator" column="DATA_OPERATOR" type="string"/>
+        <property name="uploadDate" column="UPLOAD_DATE" type="date"/>
+        <property name="note" column="NOTE" type="string"/>
+
+        <many-to-one name="inquiry" class="com.ibbl.inquiry.model.Inquiry" fetch="select" lazy="proxy">
+            <column name="INQ_OID" not-null="true" />
+        </many-to-one>
+    </class>
+
+
+
+</hibernate-mapping>
